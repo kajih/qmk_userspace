@@ -20,6 +20,10 @@
 #include "transactions.h"
 #include "config.h"
 
+#include <string.h>
+#include <stdbool.h>
+#include <stdint.h>
+
 #include "quantum.h"
 #include "quantum/keycodes.h"
 #include "keymap_swedish.h"
@@ -49,15 +53,14 @@ enum layers {
 #define CTL_MINS	MT(MOD_RCTL, KC_MINUS)
 #define ALT_ENT		MT(MOD_LALT, KC_ENT)
 
-
 /* COMBO CODE NOT USED
+ const uint16_t PROGMEM test_combo1[] = {KC_A, KC_B, COMBO_END};
+ const uint16_t PROGMEM test_combo2[] = {KC_C, KC_D, COMBO_END};
+ combo_t key_combos[] = {
+ COMBO(test_combo1, KC_ESC),
+ COMBO(test_combo2, LCTL(KC_Z)), // keycodes with modifiers are possible too!
+ };
  */
-const uint16_t PROGMEM test_combo1[] = {KC_A, KC_B, COMBO_END};
-const uint16_t PROGMEM test_combo2[] = {KC_C, KC_D, COMBO_END};
-combo_t key_combos[] = {
-    COMBO(test_combo1, KC_ESC),
-    COMBO(test_combo2, LCTL(KC_Z)), // keycodes with modifiers are possible too!
-};
 
 // Note: LAlt/Enter (ALT_ENT) is not the same thing as the keyboard shortcut Alt+Enter.
 // The notation `mod/tap` denotes a key that activates the modifier `mod` when held down, and
@@ -172,21 +175,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * Adjust Layer: Default layer settings, ADJUST / RGB
      *
      * ,-------------------------------------------.                              ,-------------------------------------------.
-     * |        |      |      |      |      |QWERTY|                              |      |      |      |      |      |        |
+     * |  TOG   | SAI  | HUI  | VAI  | MOD  |QWERTY|                              |      |  MW↓ |  MW↑ |      |      |        |
      * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
-     * |        |      |      |      |      |Colmak|                              | TOG  | SAI  | HUI  | VAI  | MOD  |        |
+     * |        | SAD  | HUD  | VAD  | RMOD |Colmak|                              |  M←  |  M↓  |  M↑  |  M→  |      |        |
      * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
-     * |        |      |      |      |      |      |      |      |  |      |      |      | SAD  | HUD  | VAD  | RMOD |        |
+     * |        |      |      |      |      |      |      |      |  | MB3  | MB4  |      |      |      |      |      |        |
      * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
      *                        |      |      |      |      |      |  |      |      |      |      |      |
-     *                        |      |      |      |      |      |  |      |      |      |      |      |
+     *                        |  X   |      |      |      |      |  | MB1  | MB2  | SPD0 | SPD1 | SPD2 |
      *                        `----------------------------------'  `----------------------------------'
      */
     [_ADJUST] = LAYOUT(
-        _______, _______, _______, _______, _______, QWERTY,                                      _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, COLEMAK,                                     RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI, RGB_MOD, _______,
-        _______, _______, _______, _______, _______, _______,_______, _______, _______, _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+        RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI, RGB_MOD, QWERTY,                                      _______, KC_WH_D, KC_WH_U, _______, _______, _______,
+        _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD,COLEMAK,                                     KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, KC_BTN3, KC_BTN4, _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, KC_BTN1, KC_BTN2, KC_ACL0, KC_ACL1, KC_ACL2
     ),
     /*
      * Tri Layer:
@@ -231,6 +234,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //     ),
 };
 
+// OLED
+oled_rotation_t oled_init_kb(oled_rotation_t rotation) {
+    return OLED_ROTATION_180;
+}
+
 layer_state_t layer_state_set_user(layer_state_t state) {
     return update_tri_layer_state(state, _NAV, _SYM, _TRI);
 }
@@ -241,6 +249,7 @@ void render_logo(void) {
         0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8, 0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF, 0xB0, 0xB1, 0xB2, 0xB3, 0xB4,
         0xC0, 0xC1, 0xC2, 0xC3, 0xC4, 0xC5, 0xC6, 0xC7, 0xC8, 0xC9, 0xCA, 0xCB, 0xCC, 0xCD, 0xCE, 0xCF, 0xD0, 0xD1, 0xD2, 0xD3, 0xD4, 0x00
     };
+
     oled_write_P(qmk_logo, false);
 }
 
@@ -309,6 +318,7 @@ bool oled_task_kb(void) {
     return false;
 }
 
+// ENCODER HANDLING
 bool encoder_update_kb(uint8_t index, bool clockwise) {
     if (!encoder_update_user(index, clockwise)) {
         return false;
@@ -332,6 +342,8 @@ bool encoder_update_kb(uint8_t index, bool clockwise) {
     return true;
 }
 
+
+// USB HID HANDLING
 void raw_hid_receive(uint8_t *data, uint8_t length) {
     dprintf("raw_hid_receive - received %u bytes \n", length);
     if (is_keyboard_master()) {
