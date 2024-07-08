@@ -1,6 +1,8 @@
 {
     "userspace_version": "1.0",
     "build_targets": [
-        ["splitkb/kyria/rev2", "kajih"]
+        ["splitkb/kyria/rev2", "kajih"],
+        ["splitkb/kyria/rev2", "kvia"],
+        ["splitkb/kyria/rev3", "kajih"]
     ]
 }
