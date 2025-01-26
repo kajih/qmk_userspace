@@ -65,7 +65,8 @@ enum layers {
 //Tap Dance Declarations
 enum {
     TD_LBRC = 0,
-    TD_RBRC
+    TD_RBRC,
+    TD_Q
 };
 
 //Tap Dance Definitions
@@ -85,10 +86,18 @@ void tapRightBrace(tap_dance_state_t *state, void *user_data) {
         default: tap_code16(SE_RBRC); break;
     }
 }
+void tapQuote(tap_dance_state_t *state, void *user_data) {
+    switch (state->count) {
+        case 1: tap_code16(SE_QUOT); break;
+        case 2: tap_code16(SE_DQUO); break;
+        default: tap_code16(SE_DQUO); break;
+    }
+}
 
 tap_dance_action_t tap_dance_actions[] = {
     [TD_LBRC]  = ACTION_TAP_DANCE_FN(tapLeftBrace),
-    [TD_RBRC]  = ACTION_TAP_DANCE_FN(tapRightBrace)
+    [TD_RBRC]  = ACTION_TAP_DANCE_FN(tapRightBrace),
+    [TD_Q]  = ACTION_TAP_DANCE_FN(tapQuote)
 };
 
 //Tap Dance END
@@ -164,7 +173,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * Sym Layer: Numbers and symbols
      *
      * ,-------------------------------------------.                              ,-------------------------------------------.
-     * |    `   |  1   |  2   |  3   |  4   |  5   |                              |   6  |  7   |  8   |  9   |  0   |   =    |
+     * |   '/"  |  1   |  2   |  3   |  4   |  5   |                              |   6  |  7   |  8   |  9   |  0   |   =    |
      * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
      * |    ~   |  !   |  @   |  #   |  $   |  %   |                              |   &  |  /   |  (   |  )   |  *   |   +    |
      * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
@@ -175,7 +184,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *                        `----------------------------------'  `----------------------------------'
      */
     [_SYM] = LAYOUT(
-        KC_GRV , KC_1 , KC_2 , KC_3 , KC_4 , KC_5 ,                                                         KC_6 , KC_7 , KC_8 , KC_9 , KC_0 , SE_EQL ,
+        TD(TD_Q), KC_1 , KC_2 , KC_3 , KC_4 , KC_5 ,                                                         KC_6 , KC_7 , KC_8 , KC_9 , KC_0 , SE_EQL ,
         SE_TILD , SE_EXLM, SE_AT , SE_HASH, SE_DLR, SE_PERC,                                      SE_AMPR, SE_SLSH, SE_LPRN, SE_RPRN, SE_ASTR, SE_PLUS,
         SE_PIPE , SE_BSLS, SE_COLN, SE_SCLN, SE_MINS, SE_LBRC, SE_LCBR, _______, _______, SE_RCBR, SE_RBRC, SE_UNDS, SE_COMM, SE_DOT, SE_CIRC, SE_QUES,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
@@ -226,7 +235,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * Tri Layer:
      *
      * ,-------------------------------------------.                              ,-------------------------------------------.
-     * |        |      |      |      |      |      |                              |      |   (  |   )  |      |   Å  |        |
+     * |        |      |      |      |      |      |                              |   ^  |   (  |   )  |   `  |   Å  |        |
      * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
      * |        |      |      |      |      |      |                              |      |   {  |   }  |   Ö  |   Ä  |        |
      * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
@@ -237,7 +246,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *                        `----------------------------------'  `----------------------------------'
      */
     [_TRI] = LAYOUT(
-        _______, _______, _______, _______, _______, _______,                                     _______, SE_LPRN, SE_RPRN, SE_UNDS, SE_ARNG, _______,
+        _______, _______, _______, _______, _______, _______,                                     SE_CIRC, SE_LPRN, SE_RPRN,  SE_GRV, SE_ARNG, _______,
         _______, _______, _______, _______, _______, _______,                                     _______, SE_LCBR, SE_RCBR, SE_ODIA, SE_ADIA, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, SE_LBRC, SE_RBRC, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
