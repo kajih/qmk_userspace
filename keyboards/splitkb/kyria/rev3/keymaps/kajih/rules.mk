@@ -1,26 +1,22 @@
-#DEFAULT_FOLDER = splitkb/kyria/rev3
-CONVERT_TO = liatris
+OLED_ENABLE = yes
+ENCODER_ENABLE = yes
 
-RAW_ENABLE = yes
+KEY_OVERRIDE_ENABLE = no # Kyriel
+
+CONVERT_TO=liatris
+SPLIT_KEYBOARD = yes
+CAPS_WORD_ENABLE = yes
+LAYER_LOCK_ENABLE = yes
 
 TAP_DANCE_ENABLE = yes
-COMMAND_ENABLE = yes
-SPACE_CADET_ENABLE = yes
-GRAVE_ESC_ENABLE = yes
-MAGIC_ENABLE = yes
-
-# Space
 CONSOLE_ENABLE = yes      # for debugging ?
 MOUSEKEY_ENABLE = yes
 
-OLED_ENABLE = yes
-ENCODER_ENABLE = yes		# Enables the use of one or more encoders
-
-RGBLIGHT_ENABLE = no		# Enable keyboard RGB underglow
+RGBLIGHT_ENABLE = no
+RGB_MATRIX_ENABLE = yes
 RGBLIGHT_ANIMATIONS = yes
-RGB_MATRIX_ENABLE = no		# Disable keyboard RGB matrix, as it is enabled by default on rev3
-RGBLIGHT_ENABLE = yes		# Enable keyboard RGB underglow
 
-CAPS_WORD_ENABLE = yes
-COMBO_ENABLE = no
-TRI_LAYER_ENABLE = yes
+WS2812_DRIVER = vendor
+RGB_MATRIX_DRIVER = ws2812
+
+RGB_MATRIX_CUSTOM_USER = no

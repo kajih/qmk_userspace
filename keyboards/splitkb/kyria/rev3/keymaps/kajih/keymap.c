@@ -219,16 +219,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
      * |        | SAD  | HUD  | VAD  | RMOD |Colmak|                              |  M←  |  M↓  |  M↑  |  M→  |      |        |
      * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
-     * |        |      |      |      |      |      |      |      |  | MB3  | MB4  |      |      |      |      |      |        |
+     * |        | SPU  | SPD  |      |      |      |      |      |  | MB3  | MB4  |      |      |      |      |      |        |
      * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
      *                        |      |      |      |      |      |  |      |      |      |      |      |
      *                        |  X   |      |      |      |      |  | MB1  | MB2  | SPD0 | SPD1 | SPD2 |
      *                        `----------------------------------'  `----------------------------------'
      */
     [_ADJUST] = LAYOUT(
-        RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI, RGB_MOD, QWERTY,                                      _______, KC_WH_D, KC_WH_U, _______, _______, _______,
-        _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD,COLEMAK,                                     KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, KC_BTN3, KC_BTN4, _______, _______, _______, _______, _______, _______,
+        RM_TOGG, RM_SATU, RM_HUEU, RM_VALU, RM_NEXT, QWERTY,                                      _______, KC_WH_D, KC_WH_U, _______, _______, _______,
+        _______, RM_SATD, RM_HUED, RM_VALD, RM_PREV, COLEMAK,                                     KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______, _______,
+        _______, RM_SPDU, RM_SPDD, _______, _______, _______, _______, _______, KC_BTN3, KC_BTN4, _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, KC_BTN1, KC_BTN2, KC_ACL0, KC_ACL1, KC_ACL2
     ),
     /*
@@ -275,7 +275,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 // OLED
-oled_rotation_t oled_init_kb(oled_rotation_t rotation) {
+oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     return OLED_ROTATION_180;
 }
 
@@ -343,10 +343,7 @@ void render_state(void) {
 
 static char offhand[RPC_M2S_BUFFER_SIZE];
 
-bool oled_task_kb(void) {
-    if (!oled_task_user()) {
-        return false;
-    }
+bool oled_task_user(void) {
     if (is_keyboard_master()) {
         render_logo();
         render_state();
@@ -359,11 +356,7 @@ bool oled_task_kb(void) {
 }
 
 // ENCODER HANDLING
-bool encoder_update_kb(uint8_t index, bool clockwise) {
-    if (!encoder_update_user(index, clockwise)) {
-        return false;
-    }
-
+bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {
         // Volume control
         if (clockwise) {
