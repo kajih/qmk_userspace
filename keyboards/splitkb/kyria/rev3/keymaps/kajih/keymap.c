@@ -226,10 +226,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *                        `----------------------------------'  `----------------------------------'
      */
     [_ADJUST] = LAYOUT(
-        RM_TOGG, RM_SATU, RM_HUEU, RM_VALU, RM_NEXT, QWERTY,                                      _______, KC_WH_D, KC_WH_U, _______, _______, _______,
-        _______, RM_SATD, RM_HUED, RM_VALD, RM_PREV, COLEMAK,                                     KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______, _______,
-        _______, RM_SPDU, RM_SPDD, _______, _______, _______, _______, _______, KC_BTN3, KC_BTN4, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, KC_BTN1, KC_BTN2, KC_ACL0, KC_ACL1, KC_ACL2
+        RM_TOGG, RM_SATU, RM_HUEU, RM_VALU, RM_NEXT, QWERTY,                                      _______, MS_WHLD, MS_WHLU, _______, _______, _______,
+        _______, RM_SATD, RM_HUED, RM_VALD, RM_PREV, COLEMAK,                                     MS_LEFT, MS_DOWN, MS_UP, MS_RGHT, _______, _______,
+        _______, RM_SPDU, RM_SPDD, _______, _______, _______, _______, _______, MS_BTN3, MS_BTN4, _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, MS_BTN1, MS_BTN2, MS_ACL0, MS_ACL1, MS_ACL2
     ),
     /*
      * Tri Layer:
