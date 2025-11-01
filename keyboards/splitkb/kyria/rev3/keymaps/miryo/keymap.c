@@ -49,11 +49,14 @@ enum layers {
 #define COLEMAK_HROW    DF(_COLEMAK_DH_HROW)
 #define COLEMAK         DF(_COLEMAK_DH)
 
+#define NUM             MO(_NUM)
 #define SYM             MO(_SYM)
-#define NAV             MO(_NAV)
 #define FKEYS           MO(_FUNCTION)
+#define NAV             MO(_NAV)
 #define ADJUST          MO(_ADJUST)
 #define TRI             MO(_TRI)
+#define BTN             MO(_BTN)
+#define MOSE            MO(_MOSE)
 
 #define CTL_ESC         MT(MOD_LCTL, KC_ESC)
 #define CTL_QUOT        MT(MOD_RCTL, KC_QUOTE)
@@ -173,10 +176,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *                        `------------------------------------'  `----------------------------------'
      */
     [_QWERTY_HROW] = LAYOUT(
-        KC_ESC , KC_Q , KC_W , KC_E , KC_R , KC_T ,                   KC_Y, KC_U , KC_I , KC_O , KC_P , KC_BSPC,
-        MT(MOD_LSFT, KC_TAB), MLGUI(KC_A), MLALT(KC_S), MLCTL(KC_D), MLSFT(KC_F) , KC_G , KC_H, MRSFT(KC_J) , MRCTL(KC_K) , MRALT(KC_L) , MRGUI(KC_BSLS), MRSFT(KC_QUOT),
-        KC_LSFT , KC_Z , KC_X , KC_C , KC_V , KC_B , TD(TD_LBRC) , CW_TOGG , FKEYS , TD(TD_RBRC) , KC_N, KC_M ,KC_COMM, KC_DOT ,KC_SLSH, KC_RCTL,
-                         ADJUST , KC_LGUI, ALT_ENT, KC_SPC , NAV , SYM , KC_SPC ,KC_RALT, KC_RGUI, KC_APP
+        KC_ESC,               KC_Q,        KC_W,        KC_E,        KC_R,        KC_T,                                                                                        KC_Y,              KC_U,        KC_I,        KC_O,        KC_P,           KC_BSPC,
+        MT(MOD_LSFT, KC_TAB), MLGUI(KC_A), MLALT(KC_S), MLCTL(KC_D), MLSFT(KC_F), KC_G,                                                                                        KC_H,              MRSFT(KC_J), MRCTL(KC_K), MRALT(KC_L), MRGUI(KC_BSLS), MRSFT(KC_QUOT),
+        KC_LSFT,              KC_Z,        KC_X,        KC_C,        KC_V,        KC_B,             BRKT,            CW_TOGG,             FKEYS,             BRCE,             KC_N,              KC_M,        KC_COMM,     KC_DOT,      KC_SLSH,        KC_RCTL,
+                                                        ADJUST,      KC_LGUI,     MT(MOSE, KC_ESC), MT(BTN, KC_SPC), MT(NAV, KC_TAB),     MT(NUM, KC_ENT),   MT(SYM, KC_BSPC), MT(FKEYS, KC_DEL), KC_RALT,     KC_APP
     ),
 
     [_QWERTY] = LAYOUT(
@@ -369,7 +372,7 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    return update_tri_layer_state(state, _NAV, _SYM, _TRI);
+    return update_tri_layer_state(state, _NAV, _NUM, _TRI);
 }
 
 void render_logo(void) {
