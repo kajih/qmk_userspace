@@ -35,9 +35,9 @@ enum layers {
     _COLEMAK_DH,
     _NUM,
     _SYM,
-    _FUNCTION,
+    _FUN,
     _NAV,
-    _ADJUST,
+    _ADJ,
     _TRI,
     _BTN,
     _MOSE,
@@ -51,9 +51,9 @@ enum layers {
 
 #define NUM       MO(_NUM)
 #define SYM       MO(_SYM)
-#define FKEYS     MO(_FUNCTION)
+#define FKEYS     MO(_FUN)
 #define NAV       MO(_NAV)
-#define ADJ       MO(_ADJUST)
+#define ADJ       MO(_ADJ)
 #define TRI       MO(_TRI)
 #define BTN       MO(_BTN)
 #define MOSE      MO(_MOSE)
@@ -117,7 +117,7 @@ void tapQuote(tap_dance_state_t *state, void *user_data) {
 tap_dance_action_t tap_dance_actions[] = {
     [TD_LBRC]  = ACTION_TAP_DANCE_FN(tapLeftBrace),
     [TD_RBRC]  = ACTION_TAP_DANCE_FN(tapRightBrace),
-    [TD_Q]  = ACTION_TAP_DANCE_FN(tapQuote)
+    [TD_Q]     = ACTION_TAP_DANCE_FN(tapQuote)
 };
 
 //Tap Dance END
@@ -199,7 +199,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,               KC_Q,      KC_W,      KC_E,      KC_R,      KC_T,                                                                                        KC_Y,              KC_U,      KC_I,      KC_O,      KC_P,         KC_BSPC,
         MT(MOD_LSFT, KC_TAB), MLG(KC_A), MLA(KC_S), MLC(KC_D), MLS(KC_F), KC_G,                                                                                        KC_H,              MRS(KC_J), MRC(KC_K), MRA(KC_L), MRG(KC_BSLS), MRS(KC_QUOT),
         KC_LSFT,              KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,             TD_LBRC,         CW_TOGG,             FKEYS,             TD_RBRC,          KC_N,              KC_M,      KC_COMM,   KC_DOT,    KC_SLSH,      KC_RCTL,
-                                                    ADJ,       KC_LGUI,   MT(MOSE, KC_ESC), MT(BTN, KC_SPC), MT(NAV, KC_TAB),     MT(NUM, KC_ENT),   MT(SYM, KC_BSPC), MT(FKEYS, KC_DEL), KC_RALT,   KC_APP
+                                                    ADJ,       KC_LGUI,   LT(_MOSE, KC_ESC), LT(_BTN, KC_SPC), LT(_NAV, KC_TAB),     LT(_NUM, KC_ENT),   LT(_SYM, KC_BSPC), LT(_FUN, KC_DEL), KC_RALT,   KC_APP
     ),
 
     [_QWERTY] = LAYOUT(
@@ -280,7 +280,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *                        |      |      |      |      |      |  |      |      |      |      |      |
      *                        `----------------------------------'  `----------------------------------'
      */
-    [_FUNCTION] = LAYOUT(
+    [_FUN] = LAYOUT(
         _______, KC_F12, KC_F9, KC_F8,   KC_F7,   _______,                                     _______, _______, _______, _______, _______, _______,
         _______, KC_F11, KC_F6, KC_F5,   KC_F4,   _______,                                     _______, KC_RSFT, KC_RCTL, KC_LALT, KC_RGUI, _______,
         _______, KC_F10, KC_F3, KC_F2,   KC_F1,   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
@@ -322,7 +322,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *                        |  X   |      |      |      |      |  | MB1  | MB2  | SPD0 | SPD1 | SPD2 |
      *                        `----------------------------------'  `----------------------------------'
      */
-    [_ADJUST] = LAYOUT(
+    [_ADJ] = LAYOUT(
         RM_TOGG, RM_SATU, RM_HUEU, RM_VALU, RM_NEXT, QWE_MOD,                                     _______, MS_WHLD, MS_WHLU, _______, _______, _______,
         _______, RM_SATD, RM_HUED, RM_VALD, RM_PREV, QWE,                                         MS_LEFT, MS_DOWN, MS_UP,   MS_RGHT, _______, _______,
         _______, RM_SPDU, RM_SPDD, _______, _______, COL_MOD, _______, _______, MS_BTN3, MS_BTN4, _______, _______, _______, _______, _______, _______,
@@ -412,27 +412,32 @@ void render_state(void) {
     // Host Keyboard Layer Status
     oled_write_P(PSTR("Layer: "), false);
     switch (get_highest_layer(layer_state | default_layer_state)) {
+        case _QWERTY_HROW:
         case _QWERTY:
             oled_write_P(PSTR("QWERTY\n"), false);
             break;
+        case _COLEMAK_DH_HROW:
         case _COLEMAK_DH:
             oled_write_P(PSTR("Colemak-DH\n"), false);
+            break;
+        case _NUM:
+        case _SYM:
+            oled_write_P(PSTR("Sym\n"), false);
+            break;
+        case _FUN:
+            oled_write_P(PSTR("Function\n"), false);
             break;
         case _NAV:
             oled_write_P(PSTR("Nav\n"), false);
             break;
-        case _SYM:
-            oled_write_P(PSTR("Sym\n"), false);
-            break;
-        case _FUNCTION:
-            oled_write_P(PSTR("Function\n"), false);
-            break;
-        case _ADJUST:
+        case _ADJ:
             oled_write_P(PSTR("Adjust\n"), false);
             break;
         case _TRI:
             oled_write_P(PSTR("Tri-State\n"), false);
             break;
+        case _BTN:
+        case _MOSE:
         default:
             oled_write_P(PSTR("Undefined\n"), false);
     }
