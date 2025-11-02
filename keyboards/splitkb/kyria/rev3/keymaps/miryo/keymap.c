@@ -53,7 +53,7 @@ enum layers {
 #define SYM             MO(_SYM)
 #define FKEYS           MO(_FUNCTION)
 #define NAV             MO(_NAV)
-#define ADJUST          MO(_ADJUST)
+#define ADJ             MO(_ADJUST)
 #define TRI             MO(_TRI)
 #define BTN             MO(_BTN)
 #define MOSE            MO(_MOSE)
@@ -64,15 +64,15 @@ enum layers {
 #define ALT_ENT         MT(MOD_LALT, KC_ENT)
 
 // Homerow Mods
-#define MLSFT(key)  MT(MOD_LSFT, key)
-#define MLCTL(key)  MT(MOD_LCTL, key)
-#define MLALT(key)  MT(MOD_LALT, key)
-#define MLGUI(key)  MT(MOD_LGUI, key)
+#define MLS(key)  MT(MOD_LSFT, key)
+#define MLC(key)  MT(MOD_LCTL, key)
+#define MLA(key)  MT(MOD_LALT, key)
+#define MLG(key)  MT(MOD_LGUI, key)
 
-#define MRSFT(key)  MT(MOD_RSFT, key)
-#define MRCTL(key)  MT(MOD_RCTL, key)
-#define MRALT(key)  MT(MOD_RALT, key)
-#define MRGUI(key)  MT(MOD_RGUI, key)
+#define MRS(key)  MT(MOD_RSFT, key)
+#define MRC(key)  MT(MOD_RCTL, key)
+#define MRA(key)  MT(MOD_RALT, key)
+#define MRG(key)  MT(MOD_RGUI, key)
 
 /* COMBO CODE NOT USED
  const uint16_t PROGMEM test_combo1[] = {KC_A, KC_B, COMBO_END};
@@ -176,10 +176,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *                        `------------------------------------'  `----------------------------------'
      */
     [_QWERTY_HROW] = LAYOUT(
-        KC_ESC,               KC_Q,        KC_W,        KC_E,        KC_R,        KC_T,                                                                                        KC_Y,              KC_U,        KC_I,        KC_O,        KC_P,           KC_BSPC,
-        MT(MOD_LSFT, KC_TAB), MLGUI(KC_A), MLALT(KC_S), MLCTL(KC_D), MLSFT(KC_F), KC_G,                                                                                        KC_H,              MRSFT(KC_J), MRCTL(KC_K), MRALT(KC_L), MRGUI(KC_BSLS), MRSFT(KC_QUOT),
-        KC_LSFT,              KC_Z,        KC_X,        KC_C,        KC_V,        KC_B,             BRKT,            CW_TOGG,             FKEYS,             BRCE,             KC_N,              KC_M,        KC_COMM,     KC_DOT,      KC_SLSH,        KC_RCTL,
-                                                        ADJUST,      KC_LGUI,     MT(MOSE, KC_ESC), MT(BTN, KC_SPC), MT(NAV, KC_TAB),     MT(NUM, KC_ENT),   MT(SYM, KC_BSPC), MT(FKEYS, KC_DEL), KC_RALT,     KC_APP
+        KC_ESC,               KC_Q,      KC_W,      KC_E,      KC_R,      KC_T,                                                                                        KC_Y,              KC_U,      KC_I,      KC_O,      KC_P,         KC_BSPC,
+        MT(MOD_LSFT, KC_TAB), MLG(KC_A), MLA(KC_S), MLC(KC_D), MLS(KC_F), KC_G,                                                                                        KC_H,              MRS(KC_J), MRC(KC_K), MRA(KC_L), MRG(KC_BSLS), MRS(KC_QUOT),
+        KC_LSFT,              KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,             BRKT,            CW_TOGG,             FKEYS,             BRCE,             KC_N,              KC_M,      KC_COMM,   KC_DOT,    KC_SLSH,      KC_RCTL,
+                                                    ADJ,       KC_LGUI,   MT(MOSE, KC_ESC), MT(BTN, KC_SPC), MT(NAV, KC_TAB),     MT(NUM, KC_ENT),   MT(SYM, KC_BSPC), MT(FKEYS, KC_DEL), KC_RALT,   KC_APP
     ),
 
     [_QWERTY] = LAYOUT(
@@ -204,10 +204,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *                        `----------------------------------'  `----------------------------------'
      */
     [_COLEMAK_DH_HROW] = LAYOUT(
-        _______, KC_Q , KC_W , KC_F , KC_P , KC_B , KC_J, KC_L , KC_U , KC_Y ,KC_SCLN, _______,
-        _______, KC_A , KC_R , KC_S , KC_T , KC_G , KC_M, KC_N , KC_E , KC_I , KC_O , _______,
-        _______, KC_Z , KC_X , KC_C , KC_D , KC_V , TD(TD_LBRC) , KC_CAPS , FKEYS , TD(TD_RBRC) , KC_K, KC_H ,KC_COMM, KC_DOT ,KC_SLSH, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+        _______, KC_Q,      KC_W,      KC_F,      KC_P,      KC_B,                                                     KC_J,    KC_L,      KC_U,      KC_Y,      KC_SCLN,   _______,
+        _______, MLG(KC_A), MLA(KC_R), MLC(KC_S), MLS(KC_T), KC_G,                                                     KC_M,    MRS(KC_N), MRC(KC_E), MRA(KC_I), MRG(KC_O), _______,
+        _______, KC_Z,      KC_X,      KC_C,      KC_D,      KC_V,    TD(TD_LBRC), KC_CAPS,      FKEYS,   TD(TD_RBRC), KC_K,    KC_H,      KC_COMM,   KC_DOT,    KC_SLSH,   _______,
+                                       _______,   _______,   _______, _______,     _______,      _______, _______,     _______, _______,   _______
 
     ),
 
