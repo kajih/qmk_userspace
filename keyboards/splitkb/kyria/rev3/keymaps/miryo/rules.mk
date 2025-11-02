@@ -1,4 +1,5 @@
-CONVERT_TO=liatris
+USER_NAME = kajih
+CONVERT_TO = liatris
 
 SPLIT_KEYBOARD = yes
 SPLIT_TRANSPORT_MIRROR = yes

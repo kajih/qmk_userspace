@@ -198,7 +198,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY_HROW] = LAYOUT(
         KC_ESC,               KC_Q,      KC_W,      KC_E,      KC_R,      KC_T,                                                                                        KC_Y,              KC_U,      KC_I,      KC_O,      KC_P,         KC_BSPC,
         MT(MOD_LSFT, KC_TAB), MLG(KC_A), MLA(KC_S), MLC(KC_D), MLS(KC_F), KC_G,                                                                                        KC_H,              MRS(KC_J), MRC(KC_K), MRA(KC_L), MRG(KC_BSLS), MRS(KC_QUOT),
-        KC_LSFT,              KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,             TD_LBRC,         CW_TOGG,             FKEYS,             TD_RBRC,          KC_N,              KC_M,      KC_COMM,   KC_DOT,    KC_SLSH,      KC_RCTL,
+        KC_LCTL,              KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,             TD_LBRC,         CW_TOGG,             FKEYS,             TD_RBRC,          KC_N,              KC_M,      KC_COMM,   KC_DOT,    KC_SLSH,      KC_RCTL,
                                                     ADJ,       KC_LGUI,   LT(_MOSE, KC_ESC), LT(_BTN, KC_SPC), LT(_NAV, KC_TAB),     LT(_NUM, KC_ENT),   LT(_SYM, KC_BSPC), LT(_FUN, KC_DEL), KC_RALT,   KC_APP
     ),
 
@@ -242,7 +242,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, CLBRC,  KC_7, KC_8,    KC_9,    CRBRC,                                       _______, _______, _______, _______, _______, _______,
         _______, CCLN,   KC_4, KC_5,    KC_6,    SE_PLUS,                                     _______, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, _______,
         _______, SE_DOT, KC_1, KC_2,    KC_3,    CBPIP,   _______, _______, _______, _______, _______, _______, SE_LABK, SE_RABK, _______, _______,
-                               _______, _______, SE_QUOT, KC_0,    KC_MINS, _______, _______, _______, _______, _______
+                               _______, _______, SE_QUOT, KC_0,    LT(_NAV, SE_MINS), _______, _______, _______, _______, _______
     ),
 
     /*
@@ -413,22 +413,28 @@ void render_state(void) {
     oled_write_P(PSTR("Layer: "), false);
     switch (get_highest_layer(layer_state | default_layer_state)) {
         case _QWERTY_HROW:
-        case _QWERTY:
+            oled_write_P(PSTR("QWERTY-HR\n"), false);
+            break;
+         case _QWERTY:
             oled_write_P(PSTR("QWERTY\n"), false);
             break;
         case _COLEMAK_DH_HROW:
+            oled_write_P(PSTR("Colemak-HR\n"), false);
+            break;
         case _COLEMAK_DH:
-            oled_write_P(PSTR("Colemak-DH\n"), false);
+            oled_write_P(PSTR("Colemak\n"), false);
             break;
         case _NUM:
-        case _SYM:
-            oled_write_P(PSTR("Sym\n"), false);
+            oled_write_P(PSTR("Numeric\n"), false);
+            break;
+         case _SYM:
+            oled_write_P(PSTR("Symbol\n"), false);
             break;
         case _FUN:
             oled_write_P(PSTR("Function\n"), false);
             break;
         case _NAV:
-            oled_write_P(PSTR("Nav\n"), false);
+            oled_write_P(PSTR("Navigation\n"), false);
             break;
         case _ADJ:
             oled_write_P(PSTR("Adjust\n"), false);
@@ -437,8 +443,12 @@ void render_state(void) {
             oled_write_P(PSTR("Tri-State\n"), false);
             break;
         case _BTN:
-        case _MOSE:
-        default:
+            oled_write_P(PSTR("Buttons\n"), false);
+            break;
+         case _MOSE:
+            oled_write_P(PSTR("Mouse\n"), false);
+            break;
+         default:
             oled_write_P(PSTR("Undefined\n"), false);
     }
 
