@@ -44,26 +44,25 @@ enum layers {
 };
 
 // Aliases for readability
-#define QWERTY_HROW		DF(_QWERTY_HROW)
-#define QWERTY          DF(_QWERTY)
-#define COLEMAK_HROW    DF(_COLEMAK_DH_HROW)
-#define COLEMAK         DF(_COLEMAK_DH)
+#define QWERTY_HROW   DF(_QWERTY_HROW)
+#define QWERTY        DF(_QWERTY)
+#define COLEMAK_HROW  DF(_COLEMAK_DH_HROW)
+#define COLEMAK       DF(_COLEMAK_DH)
 
-#define NUM             MO(_NUM)
-#define SYM             MO(_SYM)
-#define FKEYS           MO(_FUNCTION)
-#define NAV             MO(_NAV)
-#define ADJ             MO(_ADJUST)
-#define TRI             MO(_TRI)
-#define BTN             MO(_BTN)
-#define MOSE            MO(_MOSE)
+#define NUM           MO(_NUM)
+#define SYM           MO(_SYM)
+#define FKEYS         MO(_FUNCTION)
+#define NAV           MO(_NAV)
+#define ADJ           MO(_ADJUST)
+#define TRI           MO(_TRI)
+#define BTN           MO(_BTN)
+#define MOSE          MO(_MOSE)
 
-#define CTL_ESC         MT(MOD_LCTL, KC_ESC)
-#define CTL_QUOT        MT(MOD_RCTL, KC_QUOTE)
-#define CTL_MINS        MT(MOD_RCTL, KC_MINUS)
-#define ALT_ENT         MT(MOD_LALT, KC_ENT)
+#define CTL_ESC   MT(MOD_LCTL, KC_ESC)
+#define CTL_QUOT  MT(MOD_RCTL, KC_QUOTE)
+#define CTL_MINS  MT(MOD_RCTL, KC_MINUS)
+#define ALT_ENT   MT(MOD_LALT, KC_ENT)
 
-// Homerow Mods
 #define MLS(key)  MT(MOD_LSFT, key)
 #define MLC(key)  MT(MOD_LCTL, key)
 #define MLA(key)  MT(MOD_LALT, key)
@@ -78,13 +77,13 @@ enum layers {
  const uint16_t PROGMEM test_combo1[] = {KC_A, KC_B, COMBO_END};
  const uint16_t PROGMEM test_combo2[] = {KC_C, KC_D, COMBO_END};
  combo_t key_combos[] = {
- COMBO(test_combo1, KC_ESC),
+ COMBO(test_combo1, KC_ESC)
  COMBO(test_combo2, LCTL(KC_Z)), // keycodes with modifiers are possible too!
  };
  */
 
 //Tap Dance Declarations
-enum {
+enum custom_tapdance {
     TD_LBRC = 0,
     TD_RBRC,
     TD_Q
@@ -122,34 +121,55 @@ tap_dance_action_t tap_dance_actions[] = {
 };
 
 //Tap Dance END
-
 enum custom_keycodes {
-    BRCE = SAFE_RANGE,
-    BRKT
+    CLBRC = SAFE_RANGE,
+    CRBRC,
+    CBPIP,
+    CCLN
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case BRCE:
+        case CLBRC:
             if (record->event.pressed) {
                 if (get_mods() & MOD_MASK_SHIFT) {
+                    tap_code16(SE_LBRC);
+                } else {
                     tap_code16(SE_LCBR);
+                }
+            }
+            return false; // vi har hanterat tangenttrycket själva
+
+        case CRBRC:
+            if (record->event.pressed) {
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    tap_code16(SE_RBRC);
                 } else {
                     tap_code16(SE_RCBR);
                 }
             }
             return false; // vi har hanterat tangenttrycket själva
 
-        case BRKT:
+        case CBPIP:
             if (record->event.pressed) {
                 if (get_mods() & MOD_MASK_SHIFT) {
-                    tap_code16(SE_LBRC);
+                    tap_code16(SE_PIPE);
                 } else {
-                    tap_code16(SE_RBRC);
+                    tap_code16(SE_BSLS);
                 }
             }
             return false; // vi har hanterat tangenttrycket själva
-    }
+
+        case CCLN:
+            if (record->event.pressed) {
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    tap_code16(SE_COLN);
+                } else {
+                    tap_code16(SE_SCLN);
+                }
+            }
+            return false; // vi har hanterat tangenttrycket själva
+      }
     return true;
 }
 
@@ -178,7 +198,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY_HROW] = LAYOUT(
         KC_ESC,               KC_Q,      KC_W,      KC_E,      KC_R,      KC_T,                                                                                        KC_Y,              KC_U,      KC_I,      KC_O,      KC_P,         KC_BSPC,
         MT(MOD_LSFT, KC_TAB), MLG(KC_A), MLA(KC_S), MLC(KC_D), MLS(KC_F), KC_G,                                                                                        KC_H,              MRS(KC_J), MRC(KC_K), MRA(KC_L), MRG(KC_BSLS), MRS(KC_QUOT),
-        KC_LSFT,              KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,             BRKT,            CW_TOGG,             FKEYS,             BRCE,             KC_N,              KC_M,      KC_COMM,   KC_DOT,    KC_SLSH,      KC_RCTL,
+        KC_LSFT,              KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,             TD_LBRC,         CW_TOGG,             FKEYS,             TD_RBRC,          KC_N,              KC_M,      KC_COMM,   KC_DOT,    KC_SLSH,      KC_RCTL,
                                                     ADJ,       KC_LGUI,   MT(MOSE, KC_ESC), MT(BTN, KC_SPC), MT(NAV, KC_TAB),     MT(NUM, KC_ENT),   MT(SYM, KC_BSPC), MT(FKEYS, KC_DEL), KC_RALT,   KC_APP
     ),
 
@@ -219,10 +239,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_NUM] = LAYOUT(
-    _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
-    _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-                               _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+        _______, CLBRC,  KC_7, KC_8,    KC_9,    CRBRC,                                       _______, _______, _______, _______, _______, _______,
+        _______, CCLN,   KC_4, KC_5,    KC_6,    SE_PLUS,                                     _______, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, _______,
+        _______, SE_DOT, KC_1, KC_2,    KC_3,    CBPIP,   _______, _______, _______, _______, _______, _______, SE_LABK, SE_RABK, _______, _______,
+                               _______, _______, SE_QUOT, KC_0,    KC_MINS, _______, _______, _______, _______, _______
     ),
 
     /*
@@ -240,10 +260,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *                        `----------------------------------'  `----------------------------------'
      */
     [_SYM] = LAYOUT(
-        TD(TD_Q), KC_1 , KC_2 , KC_3 , KC_4 , KC_5 ,                                                         KC_6 , KC_7 , KC_8 , KC_9 , KC_0 , SE_EQL ,
-        SE_TILD , SE_EXLM, SE_AT , SE_HASH, SE_DLR, SE_PERC,                                      SE_AMPR, SE_SLSH, SE_LPRN, SE_RPRN, SE_ASTR, SE_PLUS,
-        SE_PIPE , SE_BSLS, SE_COLN, SE_SCLN, SE_MINS, SE_LBRC, SE_LCBR, _______, _______, SE_RCBR, SE_RBRC, SE_UNDS, SE_COMM, SE_DOT, SE_CIRC, SE_QUES,
-                           _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+        _______, SE_EXLM, SE_AT,   SE_HASH, SE_DLR,  SE_PERC,                                     SE_AMPR, SE_SLSH, SE_LPRN, SE_RPRN, SE_ASTR, _______,
+        _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
+        _______, SE_BSLS, SE_COLN, SE_SCLN, SE_MINS, SE_LBRC, SE_LCBR, _______, _______, SE_RCBR, SE_RBRC, SE_UNDS, SE_COMM, SE_DOT,  SE_CIRC, _______,
+                                   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
     /*
@@ -261,9 +281,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *                        `----------------------------------'  `----------------------------------'
      */
     [_FUNCTION] = LAYOUT(
-        _______, KC_F9 , KC_F10, KC_F11, KC_F12 , _______,                                     _______, _______, _______, _______, _______, _______,
-        _______, KC_F5 , KC_F6 , KC_F7 , KC_F8  , _______,                                     _______, KC_RSFT, KC_RCTL, KC_LALT, KC_RGUI, _______,
-        _______, KC_F1 , KC_F2 , KC_F3 , KC_F4  , _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, KC_F12, KC_F9, KC_F8,   KC_F7,   _______,                                     _______, _______, _______, _______, _______, _______,
+        _______, KC_F11, KC_F6, KC_F5,   KC_F4,   _______,                                     _______, KC_RSFT, KC_RCTL, KC_LALT, KC_RGUI, _______,
+        _______, KC_F10, KC_F3, KC_F2,   KC_F1,   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
