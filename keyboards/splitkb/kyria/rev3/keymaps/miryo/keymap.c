@@ -44,19 +44,19 @@ enum layers {
 };
 
 // Aliases for readability
-#define QWERTY_HROW   DF(_QWERTY_HROW)
-#define QWERTY        DF(_QWERTY)
-#define COLEMAK_HROW  DF(_COLEMAK_DH_HROW)
-#define COLEMAK       DF(_COLEMAK_DH)
+#define QWE_MOD   DF(_QWERTY_HROW)
+#define QWE       DF(_QWERTY)
+#define COL_MOD   DF(_COLEMAK_DH_HROW)
+#define COL       DF(_COLEMAK_DH)
 
-#define NUM           MO(_NUM)
-#define SYM           MO(_SYM)
-#define FKEYS         MO(_FUNCTION)
-#define NAV           MO(_NAV)
-#define ADJ           MO(_ADJUST)
-#define TRI           MO(_TRI)
-#define BTN           MO(_BTN)
-#define MOSE          MO(_MOSE)
+#define NUM       MO(_NUM)
+#define SYM       MO(_SYM)
+#define FKEYS     MO(_FUNCTION)
+#define NAV       MO(_NAV)
+#define ADJ       MO(_ADJUST)
+#define TRI       MO(_TRI)
+#define BTN       MO(_BTN)
+#define MOSE      MO(_MOSE)
 
 #define CTL_ESC   MT(MOD_LCTL, KC_ESC)
 #define CTL_QUOT  MT(MOD_RCTL, KC_QUOTE)
@@ -323,10 +323,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *                        `----------------------------------'  `----------------------------------'
      */
     [_ADJUST] = LAYOUT(
-        RM_TOGG, RM_SATU, RM_HUEU, RM_VALU, RM_NEXT, QWERTY,                                      _______, MS_WHLD, MS_WHLU, _______, _______, _______,
-        _______, RM_SATD, RM_HUED, RM_VALD, RM_PREV, COLEMAK,                                     MS_LEFT, MS_DOWN, MS_UP, MS_RGHT, _______, _______,
-        _______, RM_SPDU, RM_SPDD, _______, _______, _______, _______, _______, MS_BTN3, MS_BTN4, _______, _______, _______, _______, _______, _______,
-                                   _______, _______, _______, _______, _______, MS_BTN1, MS_BTN2, MS_ACL0, MS_ACL1, MS_ACL2
+        RM_TOGG, RM_SATU, RM_HUEU, RM_VALU, RM_NEXT, QWE_MOD,                                     _______, MS_WHLD, MS_WHLU, _______, _______, _______,
+        _______, RM_SATD, RM_HUED, RM_VALD, RM_PREV, QWE,                                         MS_LEFT, MS_DOWN, MS_UP,   MS_RGHT, _______, _______,
+        _______, RM_SPDU, RM_SPDD, _______, _______, COL_MOD, _______, _______, MS_BTN3, MS_BTN4, _______, _______, _______, _______, _______, _______,
+                                   _______, _______, COL,     _______, _______, MS_BTN1, MS_BTN2, MS_ACL0, MS_ACL1, MS_ACL2
     ),
     /*
      * Tri Layer:
@@ -351,16 +351,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_BTN] = LAYOUT(
         _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
+        _______, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______,                                     _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                                    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
     [_MOSE] = LAYOUT(
         _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-                                   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+        _______, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______,                                     MS_LEFT, MS_DOWN, MS_UP,   MS_RGHT, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, MS_ACL0, MS_ACL1, MS_ACL2, _______, _______,
+                                   _______, _______, _______, _______, _______, MS_BTN2, MS_BTN1, MS_BTN3, _______, _______
     ),
 
 
