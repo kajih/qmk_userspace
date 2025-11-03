@@ -128,51 +128,52 @@ enum custom_keycodes {
     CCLN
 };
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case CLBRC:
-            if (record->event.pressed) {
-                if (get_mods() & MOD_MASK_SHIFT) {
-                    tap_code16(SE_LBRC);
-                } else {
-                    tap_code16(SE_LCBR);
-                }
-            }
-            return false; // vi har hanterat tangenttrycket själva
+// Custom Shift/Normal Tapkey redefines
+bool shift_and_tap16(keyrecord_t *record, uint16_t scode, uint16_t code) {
 
-        case CRBRC:
-            if (record->event.pressed) {
-                if (get_mods() & MOD_MASK_SHIFT) {
-                    tap_code16(SE_RBRC);
-                } else {
-                    tap_code16(SE_RCBR);
-                }
-            }
-            return false; // vi har hanterat tangenttrycket själva
-
-        case CBPIP:
-            if (record->event.pressed) {
-                if (get_mods() & MOD_MASK_SHIFT) {
-                    tap_code16(SE_PIPE);
-                } else {
-                    tap_code16(SE_BSLS);
-                }
-            }
-            return false; // vi har hanterat tangenttrycket själva
-
-        case CCLN:
-            if (record->event.pressed) {
-                if (get_mods() & MOD_MASK_SHIFT) {
-                    tap_code16(SE_COLN);
-                } else {
-                    tap_code16(SE_SCLN);
-                }
-            }
-            return false; // vi har hanterat tangenttrycket själva
-      }
+    uint8_t mods = get_mods();
+    if (record->event.pressed) {
+        del_mods(MOD_MASK_SHIFT);
+        if (mods & MOD_MASK_SHIFT) {
+            tap_code16(scode);
+        } else {
+            tap_code16(code);
+        }
+        set_mods(mods);
+        return false;
+    }
     return true;
 }
 
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+    bool process = true;
+    switch (keycode) {
+        case CLBRC:
+            /* { [ */
+            process = shift_and_tap16(record, SE_LBRC, SE_LCBR);
+            break;
+
+        case CRBRC:
+            /* } ] */
+            process = shift_and_tap16(record, SE_RBRC, SE_RCBR);
+            break;
+
+        case CBPIP:
+            /* \ | */
+            process = shift_and_tap16(record, SE_PIPE, SE_BSLS);
+            break;
+
+        case CCLN:
+            /* ; : */
+            process = shift_and_tap16(record, SE_COLN, SE_SCLN);
+            break;
+
+        default:
+     }
+
+    return process;
+}
 
 
 
