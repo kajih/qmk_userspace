@@ -11,3 +11,5 @@
 *.uf2
 
 .idea
+compile_commands.json
+
