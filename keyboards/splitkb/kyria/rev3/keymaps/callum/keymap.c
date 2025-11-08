@@ -27,6 +27,7 @@
 #include "quantum.h"
 #include "quantum/keycodes.h"
 #include "keymap_swedish.h"
+#include "print.h"
 
 enum layers {
     _QWERTY,
@@ -40,6 +41,14 @@ enum layers {
     _TRI,
     _BTN,
 };
+
+// Tap Dance Declarations
+enum tapdance {
+    TD_LBRC = 0,
+    TD_RBRC,
+    TD_Q
+};
+
 
 // Aliases for readability
 #define QWE DF(_QWERTY)
@@ -76,101 +85,6 @@ enum layers {
  };
  */
 
-// Tap Dance Declarations
-enum custom_tapdance { TD_LBRC = 0, TD_RBRC, TD_Q };
-
-// Tap Dance Definitions
-
-void tapLeftBrace(tap_dance_state_t *state, void *user_data) {
-    switch (state->count) {
-        case 1:
-            tap_code16(SE_LPRN);
-            break;
-        case 2:
-            tap_code16(SE_LCBR);
-            break;
-        default:
-            tap_code16(SE_LBRC);
-            break;
-    }
-}
-
-void tapRightBrace(tap_dance_state_t *state, void *user_data) {
-    switch (state->count) {
-        case 1:
-            tap_code16(SE_RPRN);
-            break;
-        case 2:
-            tap_code16(SE_RCBR);
-            break;
-        default:
-            tap_code16(SE_RBRC);
-            break;
-    }
-}
-void tapQuote(tap_dance_state_t *state, void *user_data) {
-    switch (state->count) {
-        case 1:
-            tap_code16(SE_QUOT);
-            break;
-        case 2:
-            tap_code16(SE_DQUO);
-            break;
-        default:
-            tap_code16(SE_DQUO);
-            break;
-    }
-}
-
-tap_dance_action_t tap_dance_actions[] = {[TD_LBRC] = ACTION_TAP_DANCE_FN(tapLeftBrace), [TD_RBRC] = ACTION_TAP_DANCE_FN(tapRightBrace), [TD_Q] = ACTION_TAP_DANCE_FN(tapQuote)};
-
-// Tap Dance END
-enum custom_keycodes { CLBRC = SAFE_RANGE, CRBRC, CBPIP, CCLN };
-
-// Custom Shift/Normal Tapkey redefines
-bool shift_and_tap16(keyrecord_t *record, uint16_t scode, uint16_t code) {
-    uint8_t mods = get_mods();
-    if (record->event.pressed) {
-        del_mods(MOD_MASK_SHIFT);
-        if (mods & MOD_MASK_SHIFT) {
-            tap_code16(scode);
-        } else {
-            tap_code16(code);
-        }
-        set_mods(mods);
-        return false;
-    }
-    return true;
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    bool process = true;
-    switch (keycode) {
-        case CLBRC:
-            /* { [ */
-            process = shift_and_tap16(record, SE_LBRC, SE_LCBR);
-            break;
-
-        case CRBRC:
-            /* } ] */
-            process = shift_and_tap16(record, SE_RBRC, SE_RCBR);
-            break;
-
-        case CBPIP:
-            /* \ | */
-            process = shift_and_tap16(record, SE_PIPE, SE_BSLS);
-            break;
-
-        case CCLN:
-            /* ; : */
-            process = shift_and_tap16(record, SE_COLN, SE_SCLN);
-            break;
-
-        default:
-    }
-
-    return process;
-}
 
 // Note: LAlt/Enter (ALT_ENT) is not the same thing as the keyboard shortcut Alt+Enter.
 // The notation `mod/tap` denotes a key that activates the modifier `mod` when held down, and
@@ -185,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
      * |Lsft/Tab|   A  |   S  |   D  |   F  |   G  |                              |   H  |   J  |   K  |   L  |  :;  | Rshft/'|
      * |--------+------+------+------+------+------+---------------.  ,-----------+------+------+------+------+------+--------|
-     * | LCTL   |   Z  |   X  |   C  |   V  |   B  |  {[  |CapsTogg|  |F-keys|  ]} |   N  |   M  | ,  < | . >  | /?  | Rctl   |
+     * | LCTL   |   Z  |   X  |   C  |   V  |   B  | ({[  |CapsTogg|  |F-keys| )}]|   N  |   M  | ,  < | . >  | /?  | Rctl   |
      * `----------------------+------+------+------+------+--------|  |------+------+------+------+------+--------------------'
      *                        |Adjust| LGUI | BTN  | ModL | Nav    |  | Sym  | ModR | Fun | RALT | RGUI |
      *                        |      |      | Esc  | Spce | Tab    |  | Entr | Bspc | Del |      |      |
@@ -194,7 +108,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT(
         KC_ESC,               KC_Q, KC_W, KC_E, KC_R, KC_T,                                                        KC_Y, KC_U, KC_I,    KC_O,    KC_P,    KC_BSPC,
         MT(MOD_LSFT, KC_TAB), KC_A, KC_S, KC_D, KC_F, KC_G,                                                        KC_H, KC_J, KC_K,    KC_L,    KC_BSLS, MRS(KC_QUOT),
-        KC_LCTL,              KC_Z, KC_X, KC_C, KC_V, KC_B, TD_LBRC, CW_TOGG,                      FKEYS, TD_RBRC, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RCTL,
+        KC_LCTL,              KC_Z, KC_X, KC_C, KC_V, KC_B, TD(TD_LBRC), CW_TOGG,                      FKEYS, TD(TD_RBRC), KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RCTL,
                        ADJ, KC_LGUI, LT(_BTN, KC_ESC), LT(_MOL, KC_SPC), LT(_NAV, KC_TAB), /**/ LT(_SYM, KC_ENT), LT(_MOR, KC_BSPC), LT(_FUN, KC_DEL), KC_RALT, KC_RGUI
     ),
 
@@ -245,12 +159,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
      * Base Layer: Colemak DH
      *
-     * ,-------------------------------------------.                                ,-------------------------------------------.
+         * ,-------------------------------------------.                                ,-------------------------------------------.
      * |  Esc   |   Q  |   W  |   F  |   P  |   B  |                                |   J  |   L  |   U  |   Y  | ;  : |  Bksp  |
      * |--------+------+------+------+------+------|                                |------+------+------+------+------+--------|
      * |Ctrl/Esc|   A  |   R  |   S  |   T  |   G  |                                |   M  |   N  |   E  |   I  |   O  | Rshft/'|
      * |--------+------+------+------+------+------+---------------.  ,-------------+------+------+------+------+------+--------|
-     * | LShift |   Z  |   X  |   C  |   D  |   V  |  [{  | CapsL  |  |F-keys|  ]}  |   K  |   H  | ,  < | . >  | /  ? | Rctl   |
+     * | LShift |   Z  |   X  |   C  |   D  |   V  | ({[  | CapsL  |  |F-keys| )}]  |   K  |   H  | ,  < | . >  | /  ? | Rctl   |
      * `----------------------+------+------+------+------+--------|  |------+------+------+------+------+----------------------'
      *                        |Adjust| LGUI | BTN  | ModL | Nav    |  | Sym  | ModR | Fun | RALT | RGUI |
      *                        |      |      | Esc  | Spce | Tab    |  | Entr | Bspc | Del |      |      |
@@ -351,11 +265,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * Tri Layer:
      *
      * ,-------------------------------------------.                              ,-------------------------------------------.
-     * |        |      |      |      |      |      |                              |      |      |      |      |   Ö  |        |
+     * | BOOT   |      |      |      |      |      |                              |      |      |      |   Ö  |      | BOOT   |
      * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
      * |        |   Å  |   Ä  |      |      |      |                              |      |      |      |      |      |        |
      * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
-     * |        |      |      |      |      |      |      |      |  |      |      |      |      |      |      |      |        |
+     * |        |      |      |      |      |      |      | DBG  |  |      |      |      |      |      |      |      |        |
      * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
      *                        |      |      |      |      |      |  |      |      |      |      |      |
      *                        |      |      |      |      |  X   |  |   X  |      |      |      |      |
@@ -364,7 +278,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_TRI] = LAYOUT(
         QK_BOOT, _______, _______, _______, _______, _______,                                     _______, _______, _______, SE_ODIA, _______, QK_BOOT,
         _______, SE_ARNG, SE_ADIA, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, DB_TOGG, _______, _______, _______, _______, _______, _______, _______, _______,
                                    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
@@ -411,6 +325,112 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //     ),
 };
 
+// Tap Dance Definitions
+void tapLeftBrace(tap_dance_state_t *state, void *user_data) {
+    uprintf("Keycode in tapLeftBrace\n");
+    switch (state->count) {
+        case 1:
+            tap_code16(SE_LPRN);
+            break;
+        case 2:
+            tap_code16(SE_LCBR);
+            break;
+        default:
+            tap_code16(SE_LBRC);
+            break;
+    }
+}
+
+void tapRightBrace(tap_dance_state_t *state, void *user_data) {
+    uprintf("Keycode in tapRightBrace\n");
+    switch (state->count) {
+        case 1:
+            tap_code16(SE_RPRN);
+            break;
+        case 2:
+            tap_code16(SE_RCBR);
+            break;
+        default:
+            tap_code16(SE_RBRC);
+            break;
+    }
+}
+void tapQuote(tap_dance_state_t *state, void *user_data) {
+    uprintf("Keycode in tapQuote\n");
+    switch (state->count) {
+        case 1:
+            tap_code16(SE_QUOT);
+            break;
+        case 2:
+            tap_code16(SE_DQUO);
+            break;
+        default:
+            tap_code16(SE_DQUO);
+            break;
+    }
+}
+
+tap_dance_action_t tap_dance_actions[] = {
+    [TD_LBRC]   = ACTION_TAP_DANCE_FN(tapLeftBrace),
+    [TD_RBRC]   = ACTION_TAP_DANCE_FN(tapRightBrace),
+    [TD_Q]      = ACTION_TAP_DANCE_FN(tapQuote)
+};
+
+// Tap Dance END
+enum custom_keycodes {
+    CLBRC = SAFE_RANGE,
+    CRBRC,
+    CBPIP,
+    CCLN
+};
+
+// Custom Shift/Normal Tapkey redefines
+bool shift_and_tap16(keyrecord_t *record, uint16_t scode, uint16_t code) {
+    uint8_t mods = get_mods();
+    if (record->event.pressed) {
+        del_mods(MOD_MASK_SHIFT);
+        if (mods & MOD_MASK_SHIFT) {
+            tap_code16(scode);
+        } else {
+            tap_code16(code);
+        }
+        set_mods(mods);
+        return false;
+    }
+    return true;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    uprintf("Keycode %u in process_record_user\n", keycode);
+    bool process = true;
+    switch (keycode) {
+        case CLBRC:
+            /* { [ */
+            process = shift_and_tap16(record, SE_LBRC, SE_LCBR);
+            break;
+
+        case CRBRC:
+            /* } ] */
+            process = shift_and_tap16(record, SE_RBRC, SE_RCBR);
+            break;
+
+        case CBPIP:
+            /* \ | */
+            process = shift_and_tap16(record, SE_PIPE, SE_BSLS);
+            break;
+
+        case CCLN:
+            /* ; : */
+            process = shift_and_tap16(record, SE_COLN, SE_SCLN);
+            break;
+
+        default:
+    }
+
+    uprintf("Exiting process_record_user %u\n", process);
+    return process;
+}
+
 // OLED
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     return OLED_ROTATION_180;
@@ -431,7 +451,6 @@ void render_logo(void) {
 }
 
 void render_state(void) {
-
     oled_write_P(PSTR("\n"), false);
 
     // Host Keyboard Layer Status
