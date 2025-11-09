@@ -31,9 +31,12 @@
 
 enum layers {
     _QWERTY,
+    _QMOL,
+    _QMOR,
     _COLEMAK_DH,
-    _MOL,
-    _MOR,
+    _CMOL,
+    _CMOR,
+    _NUM,
     _SYM,
     _FUN,
     _NAV,
@@ -49,22 +52,23 @@ enum tapdance {
     TD_Q
 };
 
+// Keycodes
+enum custom_keycodes {
+    CLBRC = SAFE_RANGE,
+    CRBRC,
+    CBPIP,
+    CCLN
+};
+
 
 // Aliases for readability
 #define QWE DF(_QWERTY)
 #define COL DF(_COLEMAK_DH)
 
-#define SYM MO(_SYM)
 #define FKEYS MO(_FUN)
-#define NAV MO(_NAV)
 #define ADJ MO(_ADJ)
 #define TRI MO(_TRI)
 #define BTN MO(_BTN)
-
-#define CTL_ESC MT(MOD_LCTL, KC_ESC)
-#define CTL_QUOT MT(MOD_RCTL, KC_QUOTE)
-#define CTL_MINS MT(MOD_RCTL, KC_MINUS)
-#define ALT_ENT MT(MOD_LALT, KC_ENT)
 
 #define MLS(key) MT(MOD_LSFT, key)
 #define MLC(key) MT(MOD_LCTL, key)
@@ -86,9 +90,6 @@ enum tapdance {
  */
 
 
-// Note: LAlt/Enter (ALT_ENT) is not the same thing as the keyboard shortcut Alt+Enter.
-// The notation `mod/tap` denotes a key that activates the modifier `mod` when held down, and
-// produces the key `tap` when tapped (i.e. pressed and released).
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
@@ -101,7 +102,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |--------+------+------+------+------+------+---------------.  ,-----------+------+------+------+------+------+--------|
      * | LCTL   |   Z  |   X  |   C  |   V  |   B  | ({[  |CapsTogg|  |F-keys| )}]|   N  |   M  | ,  < | . >  | /?  | Rctl   |
      * `----------------------+------+------+------+------+--------|  |------+------+------+------+------+--------------------'
-     *                        |Adjust| LGUI | BTN  | ModL | Nav    |  | Sym  | ModR | Fun | RALT | RGUI |
+     *                        |Adjust| LGUI | Fun  | ModL | Nav    |  | Sym  | ModR | Num | RALT | RGUI |
      *                        |      |      | Esc  | Spce | Tab    |  | Entr | Bspc | Del |      |      |
      *                        `------------------------------------'  `---------------------------------'
      */
@@ -109,7 +110,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,               KC_Q, KC_W, KC_E, KC_R, KC_T,                                                        KC_Y, KC_U, KC_I,    KC_O,    KC_P,    KC_BSPC,
         MT(MOD_LSFT, KC_TAB), KC_A, KC_S, KC_D, KC_F, KC_G,                                                        KC_H, KC_J, KC_K,    KC_L,    KC_BSLS, MRS(KC_QUOT),
         KC_LCTL,              KC_Z, KC_X, KC_C, KC_V, KC_B, TD(TD_LBRC), CW_TOGG,                      FKEYS, TD(TD_RBRC), KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RCTL,
-                       ADJ, KC_LGUI, LT(_BTN, KC_ESC), LT(_MOL, KC_SPC), LT(_NAV, KC_TAB), /**/ LT(_SYM, KC_ENT), LT(_MOR, KC_BSPC), LT(_FUN, KC_DEL), KC_RALT, KC_RGUI
+                       ADJ, KC_LGUI, LT(_FUN, KC_ESC), LT(_QMOL, KC_SPC), LT(_NAV, KC_TAB), /**/ LT(_SYM, KC_ENT), LT(_QMOR, KC_BSPC), LT(_NUM, KC_DEL), KC_RALT, KC_RGUI
     ),
 
     /*
@@ -126,7 +127,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     *                        |      |      |      |    X |      |  |      |      |      |      |      |
     *                        `----------------------------------'  `----------------------------------'
     */
-    [_MOL] = LAYOUT(
+    [_QMOL] = LAYOUT(
         _______, _______, _______, _______, _______, _______,                                          _______, _______, _______, _______, _______, _______,
         _______, OS_LGUI, OS_LALT, OS_LCTL, OS_LSFT, _______,                                          _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, /**/ _______, _______, _______, _______, _______, _______, _______, _______,
@@ -149,7 +150,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *                        `----------------------------------'  `----------------------------------'
      */
 
-     [_MOR] = LAYOUT(
+     [_QMOR] = LAYOUT(
         _______, _______, _______, _______, _______, _______,                                          _______, _______, _______, _______, _______, _______,
         _______, KC_A,    KC_S,    KC_D,    KC_F,    _______,                                          _______, OS_RSFT, OS_RCTL, OS_RALT, OS_RGUI, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, /**/ _______, _______, _______, _______, _______, _______, _______, _______,
@@ -159,14 +160,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
      * Base Layer: Colemak DH
      *
-         * ,-------------------------------------------.                                ,-------------------------------------------.
+     * ,-------------------------------------------.                                ,-------------------------------------------.
      * |  Esc   |   Q  |   W  |   F  |   P  |   B  |                                |   J  |   L  |   U  |   Y  | ;  : |  Bksp  |
      * |--------+------+------+------+------+------|                                |------+------+------+------+------+--------|
      * |Ctrl/Esc|   A  |   R  |   S  |   T  |   G  |                                |   M  |   N  |   E  |   I  |   O  | Rshft/'|
      * |--------+------+------+------+------+------+---------------.  ,-------------+------+------+------+------+------+--------|
      * | LShift |   Z  |   X  |   C  |   D  |   V  | ({[  | CapsL  |  |F-keys| )}]  |   K  |   H  | ,  < | . >  | /  ? | Rctl   |
      * `----------------------+------+------+------+------+--------|  |------+------+------+------+------+----------------------'
-     *                        |Adjust| LGUI | BTN  | ModL | Nav    |  | Sym  | ModR | Fun | RALT | RGUI |
+     *                        |Adjust| LGUI | Fun  | ModL | Nav    |  | Sym  | ModR | Num | RALT | RGUI |
      *                        |      |      | Esc  | Spce | Tab    |  | Entr | Bspc | Del |      |      |
      *                        `------------------------------------'  `---------------------------------'
     */
@@ -174,8 +175,73 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, KC_Q, KC_W, KC_F, KC_P, KC_B,                                                   KC_J, KC_L, KC_U,    KC_Y,   KC_SCLN,  _______,
         _______, KC_A, KC_R, KC_S, KC_T, KC_G,                                                   KC_M, KC_N, KC_E,    KC_I,   KC_O,     _______,
         _______, KC_Z, KC_X, KC_C, KC_D, KC_V,  TD(TD_LBRC), KC_CAPS,        FKEYS, TD(TD_RBRC), KC_K, KC_H, KC_COMM, KC_DOT, KC_SLSH,  _______,
-     ADJ, KC_LGUI, LT(_BTN, KC_ESC), LT(_MOL, KC_SPC), LT(_NAV, KC_TAB), /**/ LT(_SYM, KC_ENT), LT(_MOR, KC_BSPC), LT(_FUN, KC_DEL), KC_RALT, KC_RGUI
+     ADJ, KC_LGUI, LT(_FUN, KC_ESC), LT(_CMOL, KC_SPC), LT(_NAV, KC_TAB), /**/ LT(_SYM, KC_ENT), LT(_CMOR, KC_BSPC), LT(_NUM, KC_DEL), KC_RALT, KC_RGUI
 
+    ),
+
+    /*
+    * Mod L Layer for Colemak
+    *
+    * ,-------------------------------------------.                              ,-------------------------------------------.
+    * |        |      |      |      |      |      |                              |      |      |      |      |      |        |
+    * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+    * |        | LGui | Alt  | Ctrl | Shft |      |                              |      |      |      |      |      |        |
+    * |--------+------+------+------+------+------+-------------.  ,-------------,-------------------------------------------.
+    * |        |      |      |      |      |      |      |      |  |      |      |      |      |      |      |      |        |
+    * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
+    *                        |      |      |      |      |      |  |      |      |      |      |      |
+    *                        |      |      |      |    X |      |  |      |      |      |      |      |
+    *                        `----------------------------------'  `----------------------------------'
+    */
+    [_CMOL] = LAYOUT(
+        _______, _______, _______, _______, _______, _______,                                          _______, _______, _______, _______, _______, _______,
+        _______, OS_LGUI, OS_LALT, OS_LCTL, OS_LSFT, _______,                                          _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, /**/ _______, _______, _______, _______, _______, _______, _______, _______,
+                                   _______, _______, _______, _______, _______, /**/ _______, _______, _______, _______, _______
+    ),
+
+
+    /*
+     * Mod R Layer for Colemak
+     *
+     * ,-------------------------------------------.                              ,-------------------------------------------.
+     * |        |      |      |      |      |      |                              |      |      |      |      |      |        |
+     * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+     * |        |      |      |      |      |      |                              |      | Shft | Ctrl |  Alt |  GUI |        |
+     * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+     * |        |      |      |      |      |      |      |      |  |      |      |      |      |      |      |      |        |
+     * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
+     *                        |      |      |      |      |      |  |      |      |      |      |      |
+     *                        |      |      |      |      |      |  |      | X    |      |      |      |
+     *                        `----------------------------------'  `----------------------------------'
+     */
+
+     [_CMOR] = LAYOUT(
+        _______, _______, _______, _______, _______, _______,                                          _______, _______, _______, _______, _______, _______,
+        _______, KC_A,    KC_R,    KC_S,    KC_T,    _______,                                          _______, OS_RSFT, OS_RCTL, OS_RALT, OS_RGUI, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, /**/ _______, _______, _______, _______, _______, _______, _______, _______,
+                                   _______, _______, _______, _______, _______, /**/ _______, _______, _______, _______, _______
+    ),
+
+    /*
+     * Num Layer: Numerical keys
+     *
+     * ,-------------------------------------------.                              ,-------------------------------------------.
+     * |        |  {[  |   7  |   8  |   9  |  ]}  |                              |      |      |      |      |      |        |
+     * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+     * |        |  : ; |   4  |   5  |   6  |   +  |                              |      | Shift| Ctrl |  Alt |  GUI |        |
+     * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+     * |        |   .  |   1  |   2  |   3  |  \ | |      |      |  |      |      |      |      |   <  |   >  |      |        |
+     * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
+     *                        |      |      |   '  |  0   |   -  |  |      |      |      |      |      |
+     *                        |      |      |      |      |      |  |      |      | X    |      |      |
+     *                        `----------------------------------'  `----------------------------------'
+     */
+     [_NUM] = LAYOUT(
+        _______, CLBRC,  KC_7, KC_8,    KC_9,    CRBRC,                                       _______, _______, _______, _______, _______, _______,
+        _______, CCLN,   KC_4, KC_5,    KC_6,    SE_PLUS,                                     _______, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, _______,
+        _______, SE_DOT, KC_1, KC_2,    KC_3,    CBPIP,   _______, _______, _______, _______, _______, _______, SE_LABK, SE_RABK, _______, _______,
+                              _______, _______, SE_QUOT, KC_0,    LT(_NAV, SE_MINS), _______, _______, _______, _______, _______
     ),
 
     /*
@@ -203,21 +269,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * Function Layer: Function keys
      *
      * ,-------------------------------------------.                              ,-------------------------------------------.
-     * |        |  F9  | F10  | F11  | F12  |      |                              |      |      |      |      |      |        |
+     * |        |      |      |      |      |      |                              |      |  F7  |  F8  |  F9  |  F10 |        |
      * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
-     * |        |  F5  |  F6  |  F7  |  F8  |      |                              |      | Shift| Ctrl |  Alt |  GUI |        |
+     * |        |      |      |      |      |      |                              |      |  F4  |  F5  |  F6  |  F11 |        |
      * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
-     * |        |  F1  |  F2  |  F3  |  F4  |      |      |      |  |      |      |      |      |      |      |      |        |
+     * |        |      |      |      |      |      |      |      |  |      |      |      |  F1  |  F2  |  F3  |  F12 |        |
      * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
      *                        |      |      |      |      |      |  |      |      |      |      |      |
      *                        |      |      |      |      |      |  |      |      |      |      |      |
      *                        `----------------------------------'  `----------------------------------'
      */
     [_FUN] = LAYOUT(
-        _______, KC_F12, KC_F9, KC_F8,   KC_F7,   _______,                                     _______, _______, _______, _______, _______, _______,
-        _______, KC_F11, KC_F6, KC_F5,   KC_F4,   _______,                                     _______, KC_RSFT, KC_RCTL, KC_LALT, KC_RGUI, _______,
-        _______, KC_F10, KC_F3, KC_F2,   KC_F1,   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-                                _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+        _______, _______, _______, _______, _______, _______,                                     _______,  KC_F7, KC_F8, KC_F9, KC_F10,_______,
+        _______, _______, _______, _______, _______, _______,                                     _______,  KC_F4, KC_F5, KC_F6, KC_F11,_______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  KC_F1, KC_F2, KC_F3, KC_F12,_______,
+                                   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
     /*
@@ -376,14 +442,6 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_Q]      = ACTION_TAP_DANCE_FN(tapQuote)
 };
 
-// Tap Dance END
-enum custom_keycodes {
-    CLBRC = SAFE_RANGE,
-    CRBRC,
-    CBPIP,
-    CCLN
-};
-
 // Custom Shift/Normal Tapkey redefines
 bool shift_and_tap16(keyrecord_t *record, uint16_t scode, uint16_t code) {
     uint8_t mods = get_mods();
@@ -459,14 +517,23 @@ void render_state(void) {
         case _QWERTY:
             oled_write_P(PSTR("QWERTY\n"), false);
             break;
+        case _QMOL:
+            oled_write_P(PSTR("Mod Left (Qwe)\n"), false);
+            break;
+        case _QMOR:
+            oled_write_P(PSTR("Mod Right (Qwe)\n"), false);
+            break;
        case _COLEMAK_DH:
             oled_write_P(PSTR("Colemak\n"), false);
             break;
-        case _MOL:
-            oled_write_P(PSTR("Mod Left\n"), false);
+        case _CMOL:
+            oled_write_P(PSTR("Mod Left (Col)\n"), false);
             break;
-        case _MOR:
-            oled_write_P(PSTR("Mod Right\n"), false);
+        case _CMOR:
+            oled_write_P(PSTR("Mod Right (Col)\n"), false);
+            break;
+        case _NUM:
+            oled_write_P(PSTR("Numerical\n"), false);
             break;
         case _SYM:
             oled_write_P(PSTR("Symbol\n"), false);
