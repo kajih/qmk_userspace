@@ -108,7 +108,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,               KC_Q, KC_W, KC_E, KC_R, KC_T,                                                        KC_Y, KC_U, KC_I,    KC_O,    KC_P,    KC_BSPC,
         MT(MOD_LSFT, KC_TAB), KC_A, KC_S, KC_D, KC_F, KC_G,                                                        KC_H, KC_J, KC_K,    KC_L,    KC_BSLS, MRS(KC_QUOT),
         KC_LCTL,              KC_Z, KC_X, KC_C, KC_V, KC_B, TD(TD_LBRC), CW_TOGG,                      FKEYS, TD(TD_RBRC), KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RCTL,
-                       ADJ, KC_LGUI, LT(_FUN, KC_ESC), LT(_QMOL, KC_SPC), LT(_NAV, KC_TAB), /**/ LT(_SYM, KC_ENT), LT(_QMOR, KC_BSPC), LT(_NUM, KC_DEL), KC_RALT, KC_RGUI
+                       ADJ, KC_LGUI, LT(_FUN, KC_ESC), LT(_QMOL, KC_SPC), LT(_NAV, KC_TAB), /**/ LT(_NUM, KC_ENT), LT(_QMOR, KC_BSPC), LT(_SYM, KC_DEL), KC_RALT, KC_RGUI
     ),
 
     /*
@@ -173,7 +173,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, KC_Q, KC_W, KC_F, KC_P, KC_B,                                                   KC_J, KC_L, KC_U,    KC_Y,   KC_SCLN,  _______,
         _______, KC_A, KC_R, KC_S, KC_T, KC_G,                                                   KC_M, KC_N, KC_E,    KC_I,   KC_O,     _______,
         _______, KC_Z, KC_X, KC_C, KC_D, KC_V,  TD(TD_LBRC), KC_CAPS,        FKEYS, TD(TD_RBRC), KC_K, KC_H, KC_COMM, KC_DOT, KC_SLSH,  _______,
-     ADJ, KC_LGUI, LT(_FUN, KC_ESC), LT(_CMOL, KC_SPC), LT(_NAV, KC_TAB), /**/ LT(_SYM, KC_ENT), LT(_CMOR, KC_BSPC), LT(_NUM, KC_DEL), KC_RALT, KC_RGUI
+     ADJ, KC_LGUI, LT(_FUN, KC_ESC), LT(_CMOL, KC_SPC), LT(_NAV, KC_TAB), /**/ LT(_NUM, KC_ENT), LT(_CMOR, KC_BSPC), LT(_SYM, KC_DEL), KC_RALT, KC_RGUI
 
     ),
 
@@ -229,16 +229,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
      * |        |  : ; |   4  |   5  |   6  |   +  |                              |      | Shift| Ctrl |  Alt |  GUI |        |
      * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
-     * |        |   .  |   1  |   2  |   3  |  \ | |      |      |  |      |      |      |      |   <  |   >  |      |        |
+     * |        |   .  |   1  |   2  |   3  |  \ | |      |      |  |      |      |      |   "   |   <  |   >  |      |        |
      * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
      *                        |      |      |   '  |  0   |   -  |  |      |      |      |      |      |
-     *                        |      |      |      |      |      |  |      |      | X    |      |      |
+     *                        |      |      |      |      |      |  | X    |      |      |      |      |
      *                        `----------------------------------'  `----------------------------------'
      */
      [_NUM] = LAYOUT(
         _______, CLBRC,  KC_7, KC_8,    KC_9,    CRBRC,                                       _______, _______, _______, _______, _______, _______,
         _______, CCLN,   KC_4, KC_5,    KC_6,    SE_PLUS,                                     _______, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, _______,
-        _______, SE_DOT, KC_1, KC_2,    KC_3,    CBPIP,   _______, _______, _______, _______, _______, _______, SE_LABK, SE_RABK, _______, _______,
+        _______, SE_DOT, KC_1, KC_2,    KC_3,    CBPIP,   _______, _______, _______, _______, _______, SE_DQUO, SE_LABK, SE_RABK, _______, _______,
                               _______, _______, SE_QUOT, KC_0,    LT(_NAV, SE_MINS), _______, _______, _______, _______, _______
     ),
 
@@ -246,20 +246,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * Sym Layer: Numbers and symbols
      *
      * ,-------------------------------------------.                              ,-------------------------------------------.
-     * |        |  !   |  @   |  #   |  $   |  %   |                              |   &  |  /   |  (   |  )   |  *   |        |
+     * |        |  !   |  "   |  #   |  $   |  %   |                              |   &  |  /   |  (   |  )   |  *   |        |
      * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
      * |        |  1   |  2   |  3   |  4   |  5   |                              |   6  |  7   |  8   |  9   |  0   |        |
      * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
-     * |        |   \  |  :   |  ;   |  -   |  [   |  {   |      |  |      |   }  |   ]  |  _   |  ,   |  .   |  ^   |        |
+     * |        |   \  |  @   |  ;   |  -   |  [   |  {   |      |  |      |   }  |   ]  |  _   |  ,   |  .   |  ^   |        |
      * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
      *                        |      |      |      |      |      |  |      |      |      |      |      |
-     *                        |      |      |      |      |      |  |  X   |      |      |      |      |
+     *                        |      |      |      |      |      |  |      |      | X    |      |      |
      *                        `----------------------------------'  `----------------------------------'
      */
     [_SYM] = LAYOUT(
-        _______, SE_EXLM, SE_AT,   SE_HASH, SE_DLR,  SE_PERC,                                     SE_AMPR, SE_SLSH, SE_LPRN, SE_RPRN, SE_ASTR, _______,
+        _______, SE_EXLM, SE_DQUO, SE_HASH, SE_DLR,  SE_PERC,                                     SE_AMPR, SE_SLSH, SE_LPRN, SE_RPRN, SE_ASTR, _______,
         _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
-        _______, SE_BSLS, SE_COLN, SE_SCLN, SE_MINS, SE_LBRC, SE_LCBR, _______, _______, SE_RCBR, SE_RBRC, SE_UNDS, SE_COMM, SE_DOT,  SE_CIRC, _______,
+        _______, SE_BSLS, SE_AT,   SE_SCLN, SE_MINS, SE_LBRC, SE_LCBR, _______, _______, SE_RCBR, SE_RBRC, SE_UNDS, SE_COMM, SE_DOT,  SE_CIRC, _______,
                                    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
@@ -267,20 +267,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * Function Layer: Function keys
      *
      * ,-------------------------------------------.                              ,-------------------------------------------.
-     * |        |      |      |      |      |      |                              |      |  F7  |  F8  |  F9  |  F10 |        |
+     * |        |      |      |      |      |      |                              | NUMLK|  F7  |  F8  |  F9  |  F10 |        |
      * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
-     * |        |      |      |      |      |      |                              |      |  F4  |  F5  |  F6  |  F11 |        |
+     * |        |      |      |      |      |      |                              | CPSLK|  F4  |  F5  |  F6  |  F11 |        |
      * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
-     * |        |      |      |      |      |      |      |      |  |      |      |      |  F1  |  F2  |  F3  |  F12 |        |
+     * |        |      |      |      |      |      |      |      |  |      | BREAK| SCLLK|  F1  |  F2  |  F3  |  F12 |        |
      * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
      *                        |      |      |      |      |      |  |      |      |      |      |      |
      *                        |      |      |    X |      |      |  |      |      |      |      |      |
      *                        `----------------------------------'  `----------------------------------'
      */
     [_FUN] = LAYOUT(
-        _______, _______, _______, _______, _______, _______,                                     _______,  KC_F7, KC_F8, KC_F9, KC_F10,_______,
-        _______, _______, _______, _______, _______, _______,                                     _______,  KC_F4, KC_F5, KC_F6, KC_F11,_______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  KC_F1, KC_F2, KC_F3, KC_F12,_______,
+        _______, _______, _______, _______, _______, _______,                                     KC_NUM,  KC_F7, KC_F8, KC_F9, KC_F10,_______,
+        _______, _______, _______, _______, _______, _______,                                     KC_CAPS, KC_F4, KC_F5, KC_F6, KC_F11,_______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_BRK,  KC_SCRL, KC_F1, KC_F2, KC_F3, KC_F12,_______,
                                    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
@@ -331,7 +331,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * ,-------------------------------------------.                              ,-------------------------------------------.
      * | BOOT   |      |      |      |      |      |                              |      |      |      |   Ö  |      | BOOT   |
      * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
-     * |        |   Å  |   Ä  |      |      |      |                              |      |      |      |      |      |        |
+     * |        |      |      |      |      |      |                              |      |      |      |   Å  |   Ä  |        |
      * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
      * |        |      |      |      |      |      |      | DBG  |  |      |      |      |      |      |      |      |        |
      * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
@@ -341,7 +341,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [_TRI] = LAYOUT(
         QK_BOOT, _______, _______, _______, _______, _______,                                     _______, _______, _______, SE_ODIA, _______, QK_BOOT,
-        _______, SE_ARNG, SE_ADIA, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, SE_ARNG, SE_ADIA, _______,
         _______, _______, _______, _______, _______, _______, _______, DB_TOGG, _______, _______, _______, _______, _______, _______, _______, _______,
                                    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
@@ -472,7 +472,7 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    return update_tri_layer_state(state, _NAV, _SYM, _TRI);
+    return update_tri_layer_state(state, _NAV, _NUM, _TRI);
 }
 
 void render_logo(void) {
@@ -495,19 +495,19 @@ void render_state(void) {
             oled_write_P(PSTR("QWERTY\n"), false);
             break;
         case _QMOL:
-            oled_write_P(PSTR("Mod Left (Qwe)\n"), false);
+            oled_write_P(PSTR("ModLQ)\n"), false);
             break;
         case _QMOR:
-            oled_write_P(PSTR("Mod Right (Qwe)\n"), false);
+            oled_write_P(PSTR("ModRQ)\n"), false);
             break;
        case _COLEMAK_DH:
             oled_write_P(PSTR("Colemak\n"), false);
             break;
         case _CMOL:
-            oled_write_P(PSTR("Mod Left (Col)\n"), false);
+            oled_write_P(PSTR("ModLC)\n"), false);
             break;
         case _CMOR:
-            oled_write_P(PSTR("Mod Right (Col)\n"), false);
+            oled_write_P(PSTR("ModRC)\n"), false);
             break;
         case _NUM:
             oled_write_P(PSTR("Numerical\n"), false);
