@@ -78,16 +78,6 @@ enum custom_keycodes {
 #define MRA(key) MT(MOD_RALT, key)
 #define MRG(key) MT(MOD_RGUI, key)
 
-/* COMBO CODE NOT USED
- const uint16_t PROGMEM test_combo1[] = {KC_A, KC_B, COMBO_END};
- const uint16_t PROGMEM test_combo2[] = {KC_C, KC_D, COMBO_END};
- combo_t key_combos[] = {
- COMBO(test_combo1, KC_ESC)
- COMBO(test_combo2, LCTL(KC_Z)), // keycodes with modifiers are possible too!
- };
- */
-
-
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
@@ -106,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [_QWERTY] = LAYOUT(
         KC_ESC,               KC_Q, KC_W, KC_E, KC_R   , KC_T            ,                                                                 KC_Y              , KC_U            , KC_I   , KC_O  , KC_P   , KC_BSPC,
-        MT(MOD_LSFT, KC_TAB), KC_A, KC_S, KC_D, KC_F   , KC_G            ,                                                                 KC_H              , KC_J            , KC_K   , KC_L  , KC_BSLS, MRS(KC_QUOT),
+        MT(MOD_LSFT, KC_TAB), KC_A, KC_S, KC_D, KC_F   , KC_G            ,                                                                 KC_H              , KC_J            , KC_K   , KC_L  , KC_BSLS, MRS(SE_DQUO),
         KC_LCTL,              KC_Z, KC_X, KC_C, KC_V   , KC_B            , TD(TD_LBRC)      , CW_TOGG         ,      FKEYS  , TD(TD_RBRC), KC_N              , KC_M            , KC_COMM, KC_DOT, KC_SLSH, KC_RCTL,
                                            ADJ, KC_LGUI, LT(_FUN, KC_ENT), LT(_QMOL, KC_DEL), LT(_NAV, KC_TAB), /**/ LT(_NUM, KC_ESC)    , LT(_QMOR, KC_BSPC), LT(_SYM, KC_SPC), KC_RALT, KC_RGUI
     ),
@@ -458,6 +448,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
 
         default:
+            ;
     }
 
     uprintf("Exiting process_record_user %u\n", process);
